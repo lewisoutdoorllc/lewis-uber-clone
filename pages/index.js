@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.css'
 import tw from 'tailwind-styled-components'
 // import mapboxgl from '!mapbox-gl'
 import Map from './componets/Map'
+import Link from 'next/link'
 
 
 
@@ -26,15 +27,20 @@ export default function Home() {
         </Header>
         {/* action buttons  */}
         <ActionButtons>
+          {/* ride button */}
+          <Link href='/search'>
           <ActionButton>
-          <ActionButtonImg src='https://i.ibb.co/cyvcpfF/uberx.png' alt="" />
-          Ride</ActionButton>
+            <ActionButtonImg src='https://i.ibb.co/cyvcpfF/uberx.png' alt="" />
+            Ride</ActionButton>
+          </Link>
+          {/* how many wheels button */}
           <ActionButton>
-          <ActionButtonImg src='https://i.ibb.co/n776JLm/bike.png' alt="" />
-          How Many Wheels</ActionButton>
+            <ActionButtonImg src='https://i.ibb.co/n776JLm/bike.png' alt="" />
+            How Many Wheels</ActionButton>
+          {/* reserve a ride button */}
           <ActionButton>
-          <ActionButtonImg src='https://i.ibb.co/5RjchBg/uberschedule.png' alt="" />
-          Reserve</ActionButton>
+            <ActionButtonImg src='https://i.ibb.co/5RjchBg/uberschedule.png' alt="" />
+            Reserve</ActionButton>
         </ActionButtons>
         {/* input field */}
         <InputField>Where To?</InputField>
