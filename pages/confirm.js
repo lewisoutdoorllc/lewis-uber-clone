@@ -1,9 +1,13 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import tw from 'tailwind-styled-components'
 import Map from './componets/Map'
 
 
 const Confirm = () => {
+    // useState for pickupCoords and dropoffCoords
+    const [pickupCoords, setPickupCoords] = useState(null)
+    const [dropoffCoords, setDropoffCoords] = useState(null)
+
     // set up mapbox to get coordinates for trip
     const getPickupCoords = () => {
         const pickup = 'Orlando, FL'
@@ -15,7 +19,7 @@ const Confirm = () => {
         )
             .then(res => res.json())
             .then(data => {
-                console.log(data.features[0].center)
+                setPickupCoords(data.features[0].center)
             })
     }
 
@@ -29,8 +33,7 @@ const Confirm = () => {
         )
             .then(res => res.json())
             .then(data => {
-                console.log(dropoff)
-                console.log(data.features[0].center)
+                setDropoffCoords(data.features[0].center)
             })
     }
 
@@ -43,7 +46,10 @@ const Confirm = () => {
 
     return (
         <Wrapper>
-            <Map />
+            <Map
+                pickupCoords={pickupCoords}
+                dropoffCoords={dropoffCoords}
+            />
             <ConfirmRideTypeContainer>
                 {/* select the type of ride section */}
 
