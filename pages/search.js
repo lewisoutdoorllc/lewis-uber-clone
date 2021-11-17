@@ -1,12 +1,18 @@
-import React from 'react'
+import { useState } from 'react'
 import tw from 'tailwind-styled-components'
 import Link from 'next/link'
 
 const Search = () => {
+
+    const [pickup, setPickupLocation] = useState("")
+    const [dropoff, setDropoffLocation] = useState("")
+
+    console.log(pickup);
+    console.log(dropoff);
+
     return (
         <Wrapper>
             {/* back button */}
-
             <BackButtonContainer>
                 <Link href="/">
                     <BackButton src='https://img.icons8.com/ios-filled/50/000000/left.png' />
@@ -21,8 +27,16 @@ const Search = () => {
                     <FromHereToThereIconSquare src='https://img.icons8.com/windows/50/000000/square-full.png' />
                 </FromHereToThereIcons>
                 <InputField>
-                    <Input placeholder='Pickup Location' />
-                    <Input placeholder='Where To?' />
+                    <Input
+                        placeholder='Pickup Location'
+                        value={pickup}
+                        onChange={(e) => setPickupLocation(e.target.value)}
+                    />
+                    <Input
+                        placeholder='Where To?'
+                        value={dropoff}
+                        onChange={(e) => setDropoffLocation(e.target.value)}
+                    />
                 </InputField>
                 <PlusIconButton src='https://img.icons8.com/ios/50/000000/plus-math.png' />
             </InputContainer>
@@ -32,9 +46,17 @@ const Search = () => {
                 Saved Places
             </SavedPlacesContainer>
             {/* confrim locations button */}
-            <ConfirmLocationsContainer>
-                Confirm Locations
-            </ConfirmLocationsContainer>
+            <Link href={{
+                pathname: '/confirm',
+                query: {
+                    pickup: 'Orlando, Fl',
+                    dropoff: 'Oviedo, Fl'
+                }
+            }}>
+                <ConfirmLocationsContainer>
+                    Confirm Locations
+                </ConfirmLocationsContainer>
+            </Link>
         </Wrapper>
     )
 }
