@@ -3,6 +3,7 @@ import tw from 'tailwind-styled-components'
 import Map from './componets/Map'
 import { useRouter } from 'next/router'
 import RideTypeSelector from './componets/RideTypeSelector'
+import Link from 'next/link'
 
 
 const Confirm = () => {
@@ -12,8 +13,8 @@ const Confirm = () => {
     // console.log("pickup", pickup);
     // console.log("dropoff", dropoff);
     // useState for pickupCoords and dropoffCoords
-    const [pickupCoords, setPickupCoords] = useState(null)
-    const [dropoffCoords, setDropoffCoords] = useState(null)
+    const [pickupCoords, setPickupCoords] = useState(0,0)
+    const [dropoffCoords, setDropoffCoords] = useState(0,0)
 
     // set up mapbox to get coordinates for trip
     const getPickupCoords = (pickup) => {
@@ -53,16 +54,26 @@ const Confirm = () => {
 
     return (
         <Wrapper>
+            {/* back button to search */}
+            <BackButtonContainer>
+                <Link href="/search">
+                    <BackButton src='https://img.icons8.com/ios-filled/50/000000/left.png' />
+                </Link>
+            </BackButtonContainer>
+            {/* map section */}
             <Map
                 pickupCoords={pickupCoords}
                 dropoffCoords={dropoffCoords}
             />
             <ConfirmRideTypeContainer>
                 {/* select the type of ride section */}
-                <RideTypeSelector />
+                <RideTypeSelector
+                    pickupCoords={pickupCoords}
+                    dropoffCoords={dropoffCoords}
+                />
                 {/* confirm uber button */}
                 <ConfirmRideButtonContainer>
-                    <ConfirmRideButton>Confirm UberX</ConfirmRideButton>
+                    <ConfirmRideButton>Confirm Uber</ConfirmRideButton>
                 </ConfirmRideButtonContainer>
             </ConfirmRideTypeContainer>
         </Wrapper>
@@ -72,10 +83,16 @@ const Confirm = () => {
 export default Confirm
 
 const Wrapper = tw.div`
-flex flex-col h-screen 
+flex flex-col h-screen
+`
+const BackButtonContainer = tw.div`
+rounded-full absolute top-4 left-4 bg-white z-10 shadow-lg cursor-pointer
+`
+const BackButton = tw.img`
+h-full object-contain
 `
 const ConfirmRideTypeContainer = tw.div`
-flex flex-1 flex-col
+flex flex-1 flex-col h-1/2
 `
 const ConfirmRideButtonContainer = tw.div`
 border-t-2
@@ -83,6 +100,7 @@ border-t-2
 const ConfirmRideButton = tw.div`
 bg-black text-white my-4 mx-4 py-4 text-center text-xl 
 `
+
 
 
 
