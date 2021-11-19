@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
@@ -6,10 +6,32 @@ import tw from 'tailwind-styled-components'
 // import mapboxgl from '!mapbox-gl'
 import Map from './componets/Map'
 import Link from 'next/link'
+import { auth } from '../firebase'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { useRouter } from 'next/router'
 
 
 
 export default function Home() {
+
+  const [user, setUser] = useState(null)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    return onAuthStateChanged(auth, user => {
+      if (user) {
+        setUser({
+          displayName: user.displayName,
+          // email: user.email,
+          photoURL: user.photoURL,
+        })
+      } else {
+        setUser(null)
+        router.push('/login')
+      }
+    })
+  }, [])
 
   return (
     <Wrapper>
@@ -21,17 +43,20 @@ export default function Home() {
           <UberLogo src='https://i.ibb.co/84stgjq/uber-technologies-new-20218114.jpg' alt="" />
           {/* profile name and picture right side */}
           <Profile>
-            <ProfileName>Cody Lewis</ProfileName>
-            <ProfilePicture src='https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_258083.png&f=1&nofb=1' alt="" />
+            <ProfileName>{user && user.displayName}</ProfileName>
+            <ProfilePicture 
+            onClick={() => signOut(auth)} 
+            src='https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fcdn.onlinewebfonts.com%2Fsvg%2Fimg_258083.png&f=1&nofb=1' alt="" />
+            {/* <ProfilePicture src={user && user.photoURL} alt="" /> */}
           </Profile>
         </Header>
         {/* action buttons  */}
         <ActionButtons>
           {/* ride button */}
           <Link href='/search'>
-          <ActionButton>
-            <ActionButtonImg src='https://i.ibb.co/cyvcpfF/uberx.png' alt="" />
-            Ride</ActionButton>
+            <ActionButton>
+              <ActionButtonImg src='https://i.ibb.co/cyvcpfF/uberx.png' alt="" />
+              Ride</ActionButton>
           </Link>
           {/* how many wheels button */}
           <ActionButton>
@@ -72,7 +97,7 @@ const ProfileName = tw.div`
 mr-4 w-20 text-sm
 `
 const ProfilePicture = tw.img`
-h-16 w-16 rounded-full border-1 border-gray-200 p-px
+h-16 w-16 rounded-full border-1 border-gray-200 p-px cursor-pointer
 `
 const ActionButtons = tw.div`
 flex
